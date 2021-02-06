@@ -1,0 +1,38 @@
+name: impfstoff-automation
+
+on:
+  push:
+  schedule:
+    - cron:  '*/30 * * * *'
+  # to allow manual triggering via GitHub webpage
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: sudo apt install python3-yaml python3-selenium chromium-browser chromium-chromedriver
+
+      - name: Create config.yml
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PW: ${{ secrets.SMTP_PW }}
+        run: |
+            cat >config.yml <<EOL
+            url_1: https://002-iz.impfterminservice.de/terminservice/suche/R7WA-SHLD-7JUX/76287/L920
+            url_2: https://002-iz.impfterminservice.de/terminservice/suche/R7WA-SHLD-7JUX/76287/L920/JC5X-CN2N-YBPS
+            smtp_server: 'smtp.office365.com'
+            smtp_port: 587
+            smtp_user: '$SMTP_USER'
+            smtp_pw: '$SMTP_PW'
+            to_email: 
+              - 'ute.bissinger@outlook.de'
+              - 'jan.bissinger@outlook.de'
+            from_email: 'jan.bissinger@outlook.de'
+            EOL
+
+      - name: Run notifier script
+        run: python3 impftermin_runner.py
