@@ -23,11 +23,11 @@ if __name__ == "__main__":
             print(exc)
 
     # Step 1: Check appointment availability information from website
-    with ImpfterminWebsite(config['url_1'], headless=False) as iw_1:
+    with ImpfterminWebsite(config['url_1'], headless=True) as iw_1:
         iw_1.open_website()
         # Step 2: If there is a first appointment available, check for availability of second appointment
         if iw_1.has_available_slot():
-            with ImpfterminWebsite(config['url_2'], headless=False) as iw_2:
+            with ImpfterminWebsite(config['url_2'], headless=True) as iw_2:
                 iw_2.open_website()
                 if iw_2.has_available_slot():
                     send_email = True
