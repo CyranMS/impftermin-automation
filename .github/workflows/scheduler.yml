@@ -2,8 +2,8 @@ name: impfstoff-automation
 
 on:
   push:
-  schedule:
-    - cron:  '*/30 * * * *'
+#   schedule:
+#     - cron:  '*/30 * * * *'
   # to allow manual triggering via GitHub webpage
   workflow_dispatch:
 
